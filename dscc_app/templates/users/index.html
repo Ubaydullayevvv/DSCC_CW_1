@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Users{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <h1 class="display-6">Users Area</h1>
+    {% if request.user.is_authenticated %}
+        <p>Visit your <a href="{% url 'users:dashboard' %}">dashboard</a> or <a href="{% url 'users:logout' %}">logout</a>.</p>
+    {% else %}
+        <p><a href="{% url 'users:login' %}">Login</a> or <a href="{% url 'users:register' %}">register</a> to access user features.</p>
+    {% endif %}
+</div>
+{% endblock %}
