@@ -54,6 +54,15 @@ jobs:
           docker push $IMAGE_NAME:latest
           docker push $IMAGE_NAME:${GITHUB_SHA}
 
+      - name: Upload deployment files
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "docker-compose.yml,deploy,scripts"
+          target: "/home/azureuser/app"
+
       - name: Deploy over SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -62,10 +71,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             set -euo pipefail
-            cd ~/DSCC_CW1_12122
-            git fetch origin
-            git checkout main
-            git pull origin main
+            mkdir -p /home/azureuser/app
+            chmod +x /home/azureuser/app/scripts/deploy.sh
             export DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
             export DOCKERHUB_TOKEN=${{ secrets.DOCKERHUB_TOKEN }}
-            ./scripts/deploy.sh
+            /home/azureuser/app/scripts/deploy.sh
