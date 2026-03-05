@@ -10,9 +10,10 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 def _load_env() -> None:
-    env_path = BASE_DIR / '.env'
-    if env_path.exists():
-        load_dotenv(env_path)
+    """Load environment variables from either the project or repository root."""
+    for env_path in (BASE_DIR / '.env', BASE_DIR.parent / '.env'):
+        if env_path.exists():
+            load_dotenv(env_path)
 
 
 def get_env(name: str, *, required: bool = False, default: str | None = None) -> str:
