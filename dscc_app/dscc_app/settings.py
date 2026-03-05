@@ -34,6 +34,11 @@ DEBUG = get_env('DEBUG', default='False').lower() in {'1', 'true', 'yes', 'on'}
 _allowed_hosts = get_env('ALLOWED_HOSTS', default='')
 ALLOWED_HOSTS = [host.strip() for host in _allowed_hosts.split(',') if host.strip()]
 
+CSRF_TRUSTED_ORIGINS = ["http://172.164.243.99:8080"]
+
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "http")
+
 RUNNING_TESTS = 'PYTEST_CURRENT_TEST' in os.environ
 USE_SQLITE_FOR_TESTS = RUNNING_TESTS or (
     get_env('USE_SQLITE_FOR_TESTS', default='False').lower()
