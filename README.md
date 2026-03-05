@@ -38,3 +38,20 @@ Production-ready Django deployment powered by Docker, PostgreSQL, Gunicorn, and 
 - View logs: `docker compose logs -f web`
 - Stop the stack: `docker compose down`
 - Remove volumes (including database data): `docker compose down -v`
+
+## Running Tests & Linting
+- Local pytest (uses SQLite automatically): `USE_SQLITE_FOR_TESTS=1 pytest`
+- Lint with flake8: `flake8`
+
+## CI/CD Pipeline
+GitHub Actions workflow `.github/workflows/deploy.yml` runs on every push to `main`:
+1. Installs Python dependencies and runs `flake8` + `pytest`
+2. Builds a Docker image tagged as `latest` and the commit SHA
+3. Pushes both tags to Docker Hub
+4. SSHes into the production server and invokes `scripts/deploy.sh`, which pulls the new image, restarts the Compose stack in detached mode (minimizing downtime), then runs migrations and `collectstatic`
+
+### Required GitHub Secrets
+- `DOCKERHUB_USERNAME`, `DOCKERHUB_TOKEN`
+- `SSH_HOST`, `SSH_USERNAME`, `SSH_PRIVATE_KEY`
+
+Optional: set `APP_DIR` on the server (or export before running the script) to override the default `~/DSCC_CW1_12122` deployment path.

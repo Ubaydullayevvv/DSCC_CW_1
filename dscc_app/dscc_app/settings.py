@@ -32,6 +32,12 @@ DEBUG = get_env('DEBUG', default='False').lower() in {'1', 'true', 'yes', 'on'}
 _allowed_hosts = get_env('ALLOWED_HOSTS', default='')
 ALLOWED_HOSTS = [host.strip() for host in _allowed_hosts.split(',') if host.strip()]
 
+RUNNING_TESTS = 'PYTEST_CURRENT_TEST' in os.environ
+USE_SQLITE_FOR_TESTS = RUNNING_TESTS or (
+    get_env('USE_SQLITE_FOR_TESTS', default='False').lower()
+    in {'1', 'true', 'yes', 'on'}
+)
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -75,16 +81,24 @@ TEMPLATES = [
 WSGI_APPLICATION = 'dscc_app.wsgi.application'
 ASGI_APPLICATION = 'dscc_app.asgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': get_env('DB_NAME', required=True),
-        'USER': get_env('DB_USER', required=True),
-        'PASSWORD': get_env('DB_PASSWORD', required=True),
-        'HOST': get_env('DB_HOST', required=True),
-        'PORT': get_env('DB_PORT', required=True),
+if USE_SQLITE_FOR_TESTS:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': get_env('DB_NAME', required=True),
+            'USER': get_env('DB_USER', required=True),
+            'PASSWORD': get_env('DB_PASSWORD', required=True),
+            'HOST': get_env('DB_HOST', required=True),
+            'PORT': get_env('DB_PORT', required=True),
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
