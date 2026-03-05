@@ -24,10 +24,18 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run flake8
+        env:
+          SECRET_KEY: ci-secret-key
+          DEBUG: "False"
+          ALLOWED_HOSTS: localhost,127.0.0.1
+          USE_SQLITE_FOR_TESTS: "1"
         run: flake8
 
       - name: Run pytest
         env:
+          SECRET_KEY: ci-secret-key
+          DEBUG: "False"
+          ALLOWED_HOSTS: localhost,127.0.0.1
           USE_SQLITE_FOR_TESTS: "1"
         run: pytest
 
