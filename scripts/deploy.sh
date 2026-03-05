@@ -18,6 +18,8 @@ export IMAGE_NAME="${DOCKERHUB_USERNAME}/dscc_app"
 log "Pulling latest images"
 docker-compose pull
 
+docker-compose down
+
 # Use 'up -d' without a preceding 'down' so Compose swaps containers in place,
 # keeping existing ones alive until replacements are up—significantly less downtime.
 log "Applying updated images without stopping the stack"
