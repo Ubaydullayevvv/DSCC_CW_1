@@ -1,3 +1,1 @@
-from django.db import models
-
-# Create your models here.
+# No custom models for the users app.
