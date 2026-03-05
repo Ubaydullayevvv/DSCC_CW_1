@@ -12,9 +12,7 @@ services:
     restart: unless-stopped
 
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ${IMAGE_NAME}:latest
     env_file:
       - ./.env
     depends_on:

@@ -13,6 +13,8 @@ cd "${APP_DIR}"
 log "Authenticating to Docker Hub"
 echo "${DOCKERHUB_TOKEN}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin >/dev/null 2>&1
 
+export IMAGE_NAME="${DOCKERHUB_USERNAME}/dscc_app"
+
 log "Pulling latest images"
 docker-compose pull
 
