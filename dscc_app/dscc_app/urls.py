@@ -6,9 +6,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
+from users import views as user_views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('blog.urls')),
+    path('users/', user_views.index, name='users-index'),
     path('', include('users.urls')),
 ]
 
