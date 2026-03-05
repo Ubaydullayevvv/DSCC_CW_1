@@ -18,3 +18,8 @@ media/
 
 # Node modules (if any future tooling adds them)
 node_modules/
+
+# env files
+.env
+**/.env
+.env.*
