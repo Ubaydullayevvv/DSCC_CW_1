@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
 def _load_env() -> None:
     """Load environment variables from either the project or repository root."""
     for env_path in (BASE_DIR / '.env', BASE_DIR.parent / '.env'):
